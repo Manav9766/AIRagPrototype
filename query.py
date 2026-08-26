@@ -5,27 +5,15 @@ from langchain_community.vectorstores import FAISS
 
 load_dotenv()
 
-def ask_question(question: str) -> str:
-    # Load embeddings and vector store
-    embeddings = OpenAIEmbeddings()
-    vector_store = FAISS.load_local(
-        "vector_store",
-        embeddings,
-        allow_dangerous_deserialization=True
-    )
+VECTOR_STORE_PATH = "vector_store"
+RETRIEVAL_K = 4
 
-    # Retrieve relevant documents
-    docs = vector_store.similarity_search(question, k=4)
 
-    # Build context from retrieved docs
-    context = "\n\n".join(doc.page_content for doc in docs)
-
-    # Create LLM
-    llm = OpenAI(temperature=0)
-
-    # Final prompt (manual RAG)
-    prompt = f"""
+def build_prompt(context: str, question: str) -> str:
+    """Build a grounded prompt for retrieval-augmented answers."""
+    return f"""
 You are an assistant answering questions using ONLY the context below.
+If the answer is not available in the context, say that the context does not contain enough information.
 
 Context:
 {context}
@@ -36,11 +24,32 @@ Question:
 Answer:
 """
 
+
+def ask_question(question: str) -> str:
+    """Retrieve relevant document chunks and generate a context-grounded answer."""
+    cleaned_question = question.strip()
+    if not cleaned_question:
+        return "Please enter a question."
+
+    embeddings = OpenAIEmbeddings()
+    vector_store = FAISS.load_local(
+        VECTOR_STORE_PATH,
+        embeddings,
+        allow_dangerous_deserialization=True
+    )
+
+    docs = vector_store.similarity_search(cleaned_question, k=RETRIEVAL_K)
+    context = "\n\n".join(doc.page_content for doc in docs)
+
+    llm = OpenAI(temperature=0)
+    prompt = build_prompt(context, cleaned_question)
+
     return llm.invoke(prompt)
+
 
 if __name__ == "__main__":
     while True:
         q = input("Ask a question (or 'exit'): ")
-        if q.lower() == "exit":
+        if q.strip().lower() in {"exit", "quit"}:
             break
         print("\nAnswer:", ask_question(q), "\n")
