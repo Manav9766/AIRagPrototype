@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 from langchain_openai import OpenAI, OpenAIEmbeddings
@@ -5,7 +7,7 @@ from langchain_community.vectorstores import FAISS
 
 load_dotenv()
 
-VECTOR_STORE_PATH = "vector_store"
+VECTOR_STORE_PATH = Path("vector_store")
 RETRIEVAL_K = 4
 
 
@@ -31,9 +33,15 @@ def ask_question(question: str) -> str:
     if not cleaned_question:
         return "Please enter a question."
 
+    if not VECTOR_STORE_PATH.exists():
+        raise FileNotFoundError(
+            f"Vector store not found at '{VECTOR_STORE_PATH}'. "
+            "Run 'python ingest.py' before querying."
+        )
+
     embeddings = OpenAIEmbeddings()
     vector_store = FAISS.load_local(
-        VECTOR_STORE_PATH,
+        str(VECTOR_STORE_PATH),
         embeddings,
         allow_dangerous_deserialization=True
     )
