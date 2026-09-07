@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -37,6 +38,12 @@ def ask_question(question: str) -> str:
         raise FileNotFoundError(
             f"Vector store not found at '{VECTOR_STORE_PATH}'. "
             "Run 'python ingest.py' before querying."
+        )
+
+    if not os.getenv("OPENAI_API_KEY"):
+        raise EnvironmentError(
+            "OPENAI_API_KEY is not configured. Copy .env.example to .env "
+            "and add your OpenAI API key before querying."
         )
 
     embeddings = OpenAIEmbeddings()
