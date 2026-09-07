@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -22,6 +23,12 @@ def ingest_documents(source_path: Path = DEFAULT_SOURCE) -> None:
 
     if source_path.suffix.lower() != ".pdf":
         raise ValueError(f"Expected a PDF source document, got: {source_path.name}")
+
+    if not os.getenv("OPENAI_API_KEY"):
+        raise EnvironmentError(
+            "OPENAI_API_KEY is not configured. Copy .env.example to .env "
+            "and add your OpenAI API key before running ingestion."
+        )
 
     loader = PyPDFLoader(str(source_path))
     documents = loader.load()
