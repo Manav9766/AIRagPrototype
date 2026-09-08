@@ -45,7 +45,21 @@ pip install -r requirements.txt
 
 ### 3. Configure the OpenAI API key
 
-Create a `.env` file in the project root:
+Copy the provided environment template to `.env`:
+
+macOS/Linux:
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Then replace the placeholder value in `.env` with your OpenAI API key:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key
