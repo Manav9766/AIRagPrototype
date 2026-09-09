@@ -8,7 +8,8 @@ from langchain_community.vectorstores import FAISS
 
 load_dotenv()
 
-VECTOR_STORE_PATH = Path("vector_store")
+BASE_DIR = Path(__file__).resolve().parent
+VECTOR_STORE_PATH = BASE_DIR / "vector_store"
 REQUIRED_VECTOR_STORE_FILES = ("index.faiss", "index.pkl")
 RETRIEVAL_K = 4
 

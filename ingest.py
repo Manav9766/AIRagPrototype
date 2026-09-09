@@ -9,8 +9,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv()
 
-DEFAULT_SOURCE = Path("data/sample_docs.pdf")
-VECTOR_STORE_PATH = "vector_store"
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_SOURCE = BASE_DIR / "data" / "sample_docs.pdf"
+VECTOR_STORE_PATH = BASE_DIR / "vector_store"
 
 
 def ingest_documents(source_path: Path = DEFAULT_SOURCE) -> None:
@@ -45,7 +46,7 @@ def ingest_documents(source_path: Path = DEFAULT_SOURCE) -> None:
 
     embeddings = OpenAIEmbeddings()
     vector_store = FAISS.from_documents(chunks, embeddings)
-    vector_store.save_local(VECTOR_STORE_PATH)
+    vector_store.save_local(str(VECTOR_STORE_PATH))
 
     print(
         f"Ingested {len(documents)} page(s) into {len(chunks)} chunk(s) "
