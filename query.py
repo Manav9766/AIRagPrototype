@@ -9,6 +9,7 @@ from langchain_community.vectorstores import FAISS
 load_dotenv()
 
 VECTOR_STORE_PATH = Path("vector_store")
+REQUIRED_VECTOR_STORE_FILES = ("index.faiss", "index.pkl")
 RETRIEVAL_K = 4
 
 
@@ -34,9 +35,14 @@ def ask_question(question: str) -> str:
     if not cleaned_question:
         return "Please enter a question."
 
-    if not VECTOR_STORE_PATH.exists():
+    missing_store_files = [
+        filename
+        for filename in REQUIRED_VECTOR_STORE_FILES
+        if not (VECTOR_STORE_PATH / filename).is_file()
+    ]
+    if not VECTOR_STORE_PATH.is_dir() or missing_store_files:
         raise FileNotFoundError(
-            f"Vector store not found at '{VECTOR_STORE_PATH}'. "
+            f"Vector store at '{VECTOR_STORE_PATH}' is missing or incomplete. "
             "Run 'python ingest.py' before querying."
         )
 
