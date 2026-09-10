@@ -61,6 +61,9 @@ def ask_question(question: str) -> str:
     )
 
     docs = vector_store.similarity_search(cleaned_question, k=RETRIEVAL_K)
+    if not docs:
+        return "No relevant document context was found for that question."
+
     context = "\n\n".join(doc.page_content for doc in docs)
 
     llm = OpenAI(temperature=0)
