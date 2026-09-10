@@ -61,10 +61,15 @@ def ask_question(question: str) -> str:
     )
 
     docs = vector_store.similarity_search(cleaned_question, k=RETRIEVAL_K)
-    if not docs:
+    context_parts = [
+        doc.page_content.strip()
+        for doc in docs
+        if doc.page_content and doc.page_content.strip()
+    ]
+    if not context_parts:
         return "No relevant document context was found for that question."
 
-    context = "\n\n".join(doc.page_content for doc in docs)
+    context = "\n\n".join(context_parts)
 
     llm = OpenAI(temperature=0)
     prompt = build_prompt(context, cleaned_question)
