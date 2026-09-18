@@ -89,6 +89,8 @@ Enter questions about the ingested document. Type `exit` or `quit` to end the se
 
 The query flow retrieves the top matching chunks from FAISS and instructs the model to answer only from that retrieved context. If the context does not contain enough information, the prompt directs the model to say so rather than invent an answer.
 
+> **Security note:** `query.py` loads the locally generated FAISS store with pickle deserialization enabled. Only query a `vector_store/` that you generated yourself with `ingest.py`; do not copy or load vector-store files from untrusted sources.
+
 ## Purpose
 This prototype simulates how internal documents can be queried safely and efficiently using LLMs in an applied engineering setting.
 
