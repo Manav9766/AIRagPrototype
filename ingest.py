@@ -16,9 +16,9 @@ VECTOR_STORE_PATH = BASE_DIR / "vector_store"
 
 def ingest_documents(source_path: Path = DEFAULT_SOURCE) -> None:
     """Load a PDF, chunk it, embed it, and persist a FAISS vector store."""
-    if not source_path.exists():
+    if not source_path.is_file():
         raise FileNotFoundError(
-            f"Source document not found: {source_path}. "
+            f"Source document is missing or is not a file: {source_path}. "
             "Add the PDF before running ingestion."
         )
 
