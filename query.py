@@ -32,6 +32,9 @@ Answer:
 
 def ask_question(question: str) -> str:
     """Retrieve relevant document chunks and generate a context-grounded answer."""
+    if not isinstance(question, str):
+        raise TypeError("Question must be a string.")
+
     cleaned_question = question.strip()
     if not cleaned_question:
         return "Please enter a question."
