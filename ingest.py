@@ -14,7 +14,7 @@ DEFAULT_SOURCE = BASE_DIR / "data" / "sample_docs.pdf"
 VECTOR_STORE_PATH = BASE_DIR / "vector_store"
 
 
-def ingest_documents(source_path: Path = DEFAULT_SOURCE) -> None:
+def ingest_documents(source_path: str | Path = DEFAULT_SOURCE) -> None:
     """Load a PDF, chunk it, embed it, and persist a FAISS vector store."""
     source_path = Path(source_path)
 
