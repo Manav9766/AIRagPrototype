@@ -17,6 +17,10 @@ This project demonstrates a simple Retrieval-Augmented Generation (RAG) pipeline
 - FAISS (vector database)
 - PyPDF
 
+## Requirements
+
+- Python 3.10+
+
 ## Setup
 
 ### 1. Create and activate a virtual environment
