@@ -85,4 +85,11 @@ if __name__ == "__main__":
         q = input("Ask a question (or 'exit'): ")
         if q.strip().lower() in {"exit", "quit"}:
             break
-        print("\nAnswer:", ask_question(q), "\n")
+
+        try:
+            answer = ask_question(q)
+        except (FileNotFoundError, EnvironmentError) as error:
+            print(f"\nSetup error: {error}\n")
+            continue
+
+        print("\nAnswer:", answer, "\n")
