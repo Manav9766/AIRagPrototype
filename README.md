@@ -75,6 +75,18 @@ The `.env` file is ignored by Git and should never be committed.
 
 A sample PDF is included at `data/sample_docs.pdf`.
 
+### Use your own PDF
+
+The command-line workflow ingests `data/sample_docs.pdf` by default. To index your own document without changing the code, replace that file with your PDF and then rerun:
+
+```bash
+python ingest.py
+```
+
+If you import the ingestion function from Python instead, `ingest_documents(...)` also accepts a custom `str` or `Path` to a PDF. Re-running ingestion rebuilds the local `vector_store/`, so rerun it whenever the source document changes.
+
+Ingestion creates embeddings through the OpenAI API, and querying also calls the OpenAI API. Depending on your account and model usage, these operations may incur API charges.
+
 ### Build the vector store
 
 ```bash
