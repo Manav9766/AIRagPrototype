@@ -42,9 +42,12 @@ def ingest_documents(source_path: str | Path = DEFAULT_SOURCE) -> None:
         chunk_size=500,
         chunk_overlap=100,
     )
-    chunks = splitter.split_documents(documents)
+    chunks = [
+        chunk for chunk in splitter.split_documents(documents)
+        if chunk.page_content and chunk.page_content.strip()
+    ]
     if not chunks:
-        raise ValueError(f"No text chunks could be created from {source_path}.")
+        raise ValueError(f"No non-empty text chunks could be created from {source_path}.")
 
     embeddings = OpenAIEmbeddings()
     vector_store = FAISS.from_documents(chunks, embeddings)
