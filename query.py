@@ -82,7 +82,12 @@ def ask_question(question: str) -> str:
 
 if __name__ == "__main__":
     while True:
-        q = input("Ask a question (or 'exit'): ")
+        try:
+            q = input("Ask a question (or 'exit'): ")
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+
         if q.strip().lower() in {"exit", "quit"}:
             break
 
