@@ -97,6 +97,8 @@ python ingest.py
 
 The ingestion script validates that the source file exists, is a PDF, contains readable pages, and produces text chunks before creating the local `vector_store/` directory.
 
+**Scanned PDFs:** This prototype extracts embedded PDF text with `PyPDFLoader`; it does not perform OCR. Image-only scans may produce no usable text and fail ingestion. Run OCR on scanned documents before indexing them.
+
 ### Ask questions
 
 ```bash
