@@ -87,6 +87,8 @@ If you import the ingestion function from Python instead, `ingest_documents(...)
 
 Ingestion creates embeddings through the OpenAI API, and querying also calls the OpenAI API. Depending on your account and model usage, these operations may incur API charges.
 
+**Document privacy:** During ingestion, text chunks extracted from the PDF are sent to the OpenAI embeddings API. When answering a question, the retrieved text chunks and your question are sent to the OpenAI model. Although the FAISS index is stored locally, document content is not processed entirely offline. Avoid indexing confidential or personal information unless you are authorized to send it to the configured API provider.
+
 ### Build the vector store
 
 ```bash
