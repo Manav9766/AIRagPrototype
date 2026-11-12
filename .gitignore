@@ -20,3 +20,11 @@ vector_store/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# --- Test, coverage, and static-analysis artifacts ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
