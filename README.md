@@ -111,6 +111,8 @@ The query flow retrieves the top matching chunks from FAISS and instructs the mo
 
 > **Security note:** `query.py` loads the locally generated FAISS store with pickle deserialization enabled. Only query a `vector_store/` that you generated yourself with `ingest.py`; do not copy or load vector-store files from untrusted sources.
 
+**Prompt-injection limitation:** Retrieved PDF text is inserted into the model prompt as context, not treated as trusted instructions by the application. A malicious or misleading document can still contain instructions that the model may follow despite the grounding prompt. Do not treat generated answers as verified facts or use this prototype to make security-sensitive decisions without independent validation and additional safeguards.
+
 ## Purpose
 This prototype simulates how internal documents can be queried safely and efficiently using LLMs in an applied engineering setting.
 
