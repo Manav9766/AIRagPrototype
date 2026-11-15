@@ -27,6 +27,9 @@ def ingest_documents(source_path: str | Path = DEFAULT_SOURCE) -> None:
     if source_path.suffix.lower() != ".pdf":
         raise ValueError(f"Expected a PDF source document, got: {source_path.name}")
 
+    if source_path.stat().st_size == 0:
+        raise ValueError(f"Source PDF is empty: {source_path}")
+
     if not os.getenv("OPENAI_API_KEY"):
         raise EnvironmentError(
             "OPENAI_API_KEY is not configured. Copy .env.example to .env "
