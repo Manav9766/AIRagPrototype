@@ -63,4 +63,7 @@ def ingest_documents(source_path: str | Path = DEFAULT_SOURCE) -> None:
 
 
 if __name__ == "__main__":
-    ingest_documents()
+    try:
+        ingest_documents()
+    except (FileNotFoundError, ValueError, EnvironmentError) as error:
+        raise SystemExit(f"Ingestion setup error: {error}") from error
