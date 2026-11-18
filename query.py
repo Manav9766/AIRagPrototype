@@ -50,6 +50,17 @@ def ask_question(question: str) -> str:
             "Run 'python ingest.py' before querying."
         )
 
+    empty_store_files = [
+        filename
+        for filename in REQUIRED_VECTOR_STORE_FILES
+        if (VECTOR_STORE_PATH / filename).stat().st_size == 0
+    ]
+    if empty_store_files:
+        raise ValueError(
+            f"Vector store at '{VECTOR_STORE_PATH}' contains empty index files: "
+            f"{', '.join(empty_store_files)}. Run 'python ingest.py' to rebuild it."
+        )
+
     if not os.getenv("OPENAI_API_KEY"):
         raise EnvironmentError(
             "OPENAI_API_KEY is not configured. Copy .env.example to .env "
@@ -93,7 +104,7 @@ if __name__ == "__main__":
 
         try:
             answer = ask_question(q)
-        except (FileNotFoundError, EnvironmentError) as error:
+        except (FileNotFoundError, EnvironmentError, ValueError) as error:
             print(f"\nSetup error: {error}\n")
             continue
 
