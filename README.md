@@ -83,6 +83,8 @@ The command-line workflow ingests `data/sample_docs.pdf` by default. To index yo
 python ingest.py
 ```
 
+**Avoid committing private PDFs:** `data/sample_docs.pdf` is tracked by Git, so replacing it with a personal document will show that document as a change ready to commit. Before committing, restore the sample PDF (`git restore data/sample_docs.pdf`) or use the Python function with a separate, untracked PDF path. Do not rely on `.gitignore` to protect a file that is already tracked.
+
 If you import the ingestion function from Python instead, `ingest_documents(...)` also accepts a custom `str` or `Path` to a PDF. Re-running ingestion rebuilds the local `vector_store/`, so rerun it whenever the source document changes.
 
 Ingestion creates embeddings through the OpenAI API, and querying also calls the OpenAI API. Depending on your account and model usage, these operations may incur API charges.
