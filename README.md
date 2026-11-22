@@ -91,7 +91,7 @@ To ingest a separate PDF without replacing the tracked sample, pass its path dir
 python -c "from ingest import ingest_documents; ingest_documents('../my-document.pdf')"
 ```
 
-This works in PowerShell and macOS/Linux shells. `ingest_documents(...)` accepts a `str` or `Path`; use a file outside the repository for private documents. Re-running ingestion rebuilds the local `vector_store/`, so rerun it whenever the source document changes.
+This works in PowerShell and macOS/Linux shells. `ingest_documents(...)` accepts a `str` or `Path`; use a file outside the repository for private documents. **Each ingestion replaces the local `vector_store/` index rather than adding to it.** After indexing a custom PDF, run `python query.py` directly; running `python ingest.py` again will replace that index with the default sample PDF. To refresh the custom index, repeat the custom ingestion command.
 
 Ingestion creates embeddings through the OpenAI API, and querying also calls the OpenAI API. Depending on your account and model usage, these operations may incur API charges.
 
